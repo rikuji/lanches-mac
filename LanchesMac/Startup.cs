@@ -39,7 +39,7 @@ namespace LanchesMac
             services.AddTransient<ICategoriaRepository, CategoriaRepository>();
             services.AddTransient<ILancheRepository, LancheRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-          
+
             services.AddScoped(cp => CarrinhoCompra.GetCarrinho(cp));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -67,6 +67,11 @@ namespace LanchesMac
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "filtrarPorCategoria",
+                    template: "Lanche/{action}/{categoria}",
+                    defaults: new { Controller = "Lanche", action = "List" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

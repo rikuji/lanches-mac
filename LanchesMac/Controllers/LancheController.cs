@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LanchesMac.Models;
 using LanchesMac.Repositories;
 using LanchesMac.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +19,38 @@ namespace LanchesMac.Controllers
             _lancheRepository = lancheRepository;
             _categoriaRepository = categoriaRepository;
         }
-        public IActionResult List()
+        public IActionResult List(string categoria)
         {
-            ViewBag.Lanche = "Lanches";
-            ViewData["Categoria"] = "Categoria";
-            //var lanches = _lancheRepository.Lanches;
-            //return View(lanches);
-            var lanchesListViewModel = new LancheListViewModel();
-            lanchesListViewModel.Lanches = _lancheRepository.Lanches;
-            lanchesListViewModel.CategoriaAtual = "Categoria Atual";
-            return View(lanchesListViewModel);
+            string _categoria = categoria;
+            IEnumerable<Lanche> lanches;
+            string categoriaAtual = string.Empty;
+
+            if (string.IsNullOrEmpty(categoria))
+            {
+                lanches = _lancheRepository.Lanches.OrderBy(p => p.LancheId);
+                categoriaAtual = "Todos os lanches";
+            }
+            else
+            {
+                if (string.Equals("Normal", _categoria, StringComparison.OrdinalIgnoreCase))
+                {
+                    lanches = _lancheRepository.Lanches.Where(p => p.Categoria.Nome.Equals("Normal")).OrderBy(p => p.Nome);
+                }
+                else
+                {
+                    lanches = _lancheRepository.Lanches.Where(p => p.Categoria.Nome.Equals("Natural")).OrderBy(p => p.Nome);
+                }
+
+                categoriaAtual = _categoria;
+            }
+
+            var lancheListViewModel = new LancheListViewModel
+            {
+                Lanches = lanches,
+                CategoriaAtual = categoriaAtual
+            };
+
+            return View(lancheListViewModel);
         }
     }
 }
