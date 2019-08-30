@@ -34,6 +34,11 @@
                     <li><a asp-area="" asp-controller="Contato" asp-action="Index">About</a></li>
                     @await Component.InvokeAsync("CarrinhoCompraResumo");
                 </ul>
+                <form class="navbar-form navbar-right" asp-controller="Lanche" asp-action="Search" method="get">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Procurar lanche" name="searchString" value="@ViewData["searchString"]">
+                    </div>
+                </form>
             </div>
         </div>
     </nav>

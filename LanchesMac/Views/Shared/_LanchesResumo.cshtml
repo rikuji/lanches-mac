@@ -7,8 +7,15 @@
     <div>
         <h3 class="pull-right">@Model.Preco.ToString("c")</h3>
         <h3>
-            @Model.Nome
+            <a asp-controller="Lanche" asp-action="Details" asp-routeId="@Model.LancheId">@Model.Nome</a>
         </h3>
         <p>@Model.DescricaoCurta</p>
+    </div>
+    <div class="addToCart text-right">
+        <p class="button">
+            <a class="btn btn-primary" id="cartButton" asp-controller="CarrinhoCompra" asp-action="AdicionarItemNoCarrinhoCompra" asp-route-lancheId ="@Model.LancheId">
+                Incluir no Carrinho
+            </a>
+        </p>
     </div>
 </div>
